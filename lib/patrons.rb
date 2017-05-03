@@ -11,4 +11,13 @@ class Patrons
     @id = saved_data[0]["id"].to_i
   end
 
+  def self.all
+    all_patrons_arr = []
+    all_patrons_tuples = DB.exec("SELECT * FROM patrons;")
+    all_patrons_tuples.each do |tuple|
+      all_patrons_arr.push(tuple)
+    end
+    all_patrons_arr
+  end
+
 end
