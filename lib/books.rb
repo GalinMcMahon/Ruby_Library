@@ -57,3 +57,10 @@ class Books
   end
 
 end
+
+
+
+
+
+# result.first().fetch("id").to_i()
+# result[0]['id']

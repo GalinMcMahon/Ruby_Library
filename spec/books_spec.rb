@@ -1,4 +1,5 @@
 require "books"
+require "patrons"
 require "rspec"
 require "pry"
 require "pg"
@@ -76,7 +77,7 @@ describe('Books') do
     end
   end
 
-  describe('.find_by_title')
+  describe('.find_by_title') do
     it('returns a book for a given id as it matches in the database') do
       test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
       test_book1.save
@@ -97,20 +98,3 @@ describe('Books') do
   end
 
 end
-
-
-
-
-
-
-# describe("#id") do
-#   it("sets its ID when you save it") do
-#     test_doctor = Doctor.new({:doctor_name => "Dr. Jones", :id => nil, :specialty => "Oncologist"})
-#     # test_doctor.save()
-#     expect(test_doctor.id()).to(eq(nil))
-#
-# describe("#save") do
-#   it("lets you save doctors to the database") do
-#     test_doctor = Doctor.new({:doctor_name => "Dr. Jones", :id => nil, :specialty => "Oncologist"})
-#     test_doctor.save()
-#     expect(Doctor.all()).to(eq([test_doctor]))
