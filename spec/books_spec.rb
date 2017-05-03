@@ -33,6 +33,17 @@ describe('Books') do
     end
   end
 
+  describe('.delete') do
+    it("returns all books in the database") do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      test_book2.save
+      Books.delete(test_book2.id)
+      expect(Books.all.length).to(eq(1))
+    end
+  end
+
 end
 
 
