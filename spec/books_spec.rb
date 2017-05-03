@@ -44,6 +44,38 @@ describe('Books') do
     end
   end
 
+  describe('#update') do
+    it("updates the title and/or author for a book on the database") do
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      test_book2.save
+      update_hash = {'title' => 'Lord of the Rings'}
+      test_book2.update(update_hash)
+      DB.exec("SELECT * FROM books WHERE id = '#{test_book2.id}';")
+      expect(test_book2.title).to(eq('Lord of the Rings'))
+    end
+  end
+
+  describe('#update') do
+    it("updates the title and/or author for a book on the database") do
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      test_book2.save
+      update_hash = {'title' => 'Lord of the Rings', 'author' => 'Frank Zappa'}
+      test_book2.update(update_hash)
+      DB.exec("SELECT * FROM books WHERE id = '#{test_book2.id}';")
+      expect([test_book2.title, test_book2.author] ).to(eq(['Lord of the Rings','Frank Zappa']))
+    end
+  end
+
+  describe('.id') do
+    it('returns a book for a given id as it matches in the database') do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      saved_id = test_book2.save
+      expect(Books.find(saved_id)['title']).to(eq(test_book2.title))
+    end
+  end
+
 end
 
 

@@ -27,13 +27,28 @@ class Books
     DB.exec("DELETE FROM books WHERE id = '#{id}'")
   end
 
-  def update(title)
+  def update(info)
+    if (info['title'] != nil)
+      @title = info['title']
+      DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{@id};")
+    end
+    if (info['author'] != nil)
+      @author = info['author']
+      DB.exec("UPDATE books SET author = '#{@author}' WHERE id = #{@id};")
+    end
   end
 
-  def find_title(title)
+  def Books.find(id)
+    results = DB.exec("SELECT * FROM books WHERE id = #{id};")
+    found_book_hash = results[0]
+    found_book_hash
   end
 
-  def find_author(author)
-  end
+  # def find_title(title)
+  #
+  # end
+  #
+  # def find_author(author)
+  # end
 
 end
