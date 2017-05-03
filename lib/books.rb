@@ -38,17 +38,22 @@ class Books
     end
   end
 
-  def Books.find(id)
+  def self.find_by_id(id)
     results = DB.exec("SELECT * FROM books WHERE id = #{id};")
     found_book_hash = results[0]
     found_book_hash
   end
 
-  # def find_title(title)
-  #
-  # end
-  #
-  # def find_author(author)
-  # end
+  def self.find_by_title(title)
+    results = DB.exec("SELECT * FROM books WHERE title = '#{title}';")
+    found_book_hash = results[0]
+    found_book_hash
+  end
+
+  def self.find_by_author(author)
+    results = DB.exec("SELECT * FROM books WHERE author = '#{author}';")
+    found_book_hash = results[0]
+    found_book_hash
+  end
 
 end
