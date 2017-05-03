@@ -9,6 +9,8 @@ DB = PG.connect({:dbname => 'library_test'})
 RSpec.configure do |config|
   config.after(:each) do
     DB.exec("DELETE FROM books *;")
+    DB.exec("DELETE FROM patrons *;")
+    DB.exec("DELETE FROM checkouts *;")
   end
 end
 
@@ -94,6 +96,17 @@ describe('Books') do
       test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
       test_book2.save
       expect(Books.find_by_author(test_book2.author)['author']).to(eq("JRR Tolkien"))
+    end
+  end
+
+  describe('#checkout') do
+    it('assigns a book to a patron') do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_patron1 = Patrons.new('Dean Ween')
+      test_patron1.save
+      rows = test_book1.checkout(test_patron1.id)
+      expect(rows[0]["patron_id"].to_i).to(eq(test_patron1.id))
     end
   end
 

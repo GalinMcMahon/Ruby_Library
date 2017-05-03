@@ -56,8 +56,16 @@ class Books
     found_book_hash
   end
 
-end
+  def checkout(patron_id)
+    # assign id to patrons_id
+    DB.exec("INSERT INTO checkouts (patron_id, book_id) VALUES (#{patron_id}, #{@id});")
+    result_rows = DB.exec("SELECT * FROM checkouts WHERE book_id = #{@id};")
+    # update due_date
 
+    result_rows
+  end
+
+end
 
 
 
