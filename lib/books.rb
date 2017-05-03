@@ -7,11 +7,23 @@ class Books
     @due_date = nil
   end
 
-  def self.save(book)
-    DB.exec("INSERT INTO books (title, author) VALUES ('#{book.title}', '#{book.author}');")
+  def save()
+    DB.exec("INSERT INTO books (title, author) VALUES ('#{@title}', '#{@author}');")
   end
 
-  def get_list()
+  def self.all()
+    all_books_arr = []
+    all_books_tuples = DB.exec("SELECT * FROM books;")
+    all_books_tuples.each do |tuple|
+      all_books_arr.push(tuple)
+    end
+    all_books_arr
+  end
+
+  def find_title(title)
+  end
+
+  def find_author(author)
   end
 
   def update()
