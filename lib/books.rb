@@ -57,12 +57,14 @@ class Books
   end
 
   def checkout(patron_id)
-    # assign id to patrons_id
     DB.exec("INSERT INTO checkouts (patron_id, book_id) VALUES (#{patron_id}, #{@id});")
     result_rows = DB.exec("SELECT * FROM checkouts WHERE book_id = #{@id};")
-    # update due_date
-
     result_rows
+  end
+
+  def set_due_date()
+    new_date = Time.now + (1*7*24*60*60)
+    
   end
 
 end

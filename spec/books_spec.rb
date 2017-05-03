@@ -110,4 +110,16 @@ describe('Books') do
     end
   end
 
+  describe('#set_due_date') do
+    it("sets a due date on a book when it's checked out to a patron") do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_patron1 = Patrons.new('Dean Ween')
+      test_patron1.save
+      rows = test_book1.checkout(test_patron1.id)
+      test_book1.set_due_date()
+      expect(test_book1.due_date).to(be_instance_of(Time))
+    end
+  end
+
 end
