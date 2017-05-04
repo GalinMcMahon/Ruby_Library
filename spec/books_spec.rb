@@ -112,33 +112,32 @@ describe('Books') do
       test_book2.save
       found_book_arr = Books.find_by_title(test_book2.title)
       author_name = found_book_arr[1]
-# binding.pry
       expect(Books.find_by_author(author_name)).to(eq(["The Hobbit", "JRR Tolkien"]))
     end
   end
 
-  # describe('#checkout') do
-  #   it('assigns a book to a patron') do
-  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-  #     test_book1.save
-  #     test_patron1 = Patrons.new('Dean Ween')
-  #     test_patron1.save
-  #     rows = test_book1.checkout(test_patron1.id)
-  #     expect(rows[0]["patron_id"].to_i).to(eq(test_patron1.id))
-  #   end
-  # end
-  #
-  # describe('#set_due_date') do
-  #   it("sets a due date on a book when it's checked out to a patron") do
-  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-  #     test_book1.save
-  #     test_patron1 = Patrons.new('Dean Ween')
-  #     test_patron1.save
-  #     rows = test_book1.checkout(test_patron1.id)
-  #     test_book1.set_due_date()
-  #     now = Time.now.+(7*24*60*60).strftime('%Y-%m-%d')
-  #     expect(test_book1.due_date).to(eq(now))
-  #   end
-  # end
+  describe('#checkout') do
+    it('assigns a book to a patron') do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_patron1 = Patrons.new('Dean Ween')
+      test_patron1.save
+      rows = test_book1.checkout(test_patron1.id)
+      expect(rows[0]["patron_id"].to_i).to(eq(test_patron1.id))
+    end
+  end
+
+  describe('#set_due_date') do
+    it("sets a due date on a book when it's checked out to a patron") do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_patron1 = Patrons.new('Dean Ween')
+      test_patron1.save
+      rows = test_book1.checkout(test_patron1.id)
+      test_book1.set_due_date()
+      now = Time.now.+(7*24*60*60).strftime('%Y-%m-%d')
+      expect(test_book1.due_date).to(eq(now))
+    end
+  end
 
 end
