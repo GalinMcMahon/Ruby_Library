@@ -37,9 +37,12 @@ class Books
       @title = info['title']
       DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{@id};")
     end
+
     if (info['author'] != nil)
       @author = info['author']
-      DB.exec("UPDATE books SET author = '#{@author}' WHERE id = #{@id};")
+      results = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{@id}")
+      author_id = results[0]["author_id"].to_i
+      DB.exec("UPDATE authors SET name = '#{@author}' WHERE id = #{author_id};")
     end
   end
 
