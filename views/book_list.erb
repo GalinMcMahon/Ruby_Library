@@ -1,0 +1,26 @@
+<h1></h1>BOOK LIST ERB<br><br>
+
+        <!-- THIS PAGE ALLOWS A TITLE SEARCH AND ALSO SHOWS ALL BOOKS -->
+
+<h2>Search by title</h2><br><br>
+
+
+<form action="/title_search">
+  <div class="form-group">
+    <label for="patron_name">Title:</label>
+      <input name="patron_name" class="form-control" type="text">
+  </div>
+  <hr>
+  <button action="/found_book" class="btn btn-success">search</button>
+</form>
+      <!-- NEED TO RUN self.find_by_title ON APP.RB -->
+
+
+<h2>A list of all books in the library</h2><br><br>
+
+<ul style="list-style: none;">
+  <% @title.each() do |book_title| %>
+    <li><a href="/book_title/<%= title.id() %>"><%= book_title.title() %></a></li>
+  <% end %>
+
+<h3><a href="/">Something</a></h3>

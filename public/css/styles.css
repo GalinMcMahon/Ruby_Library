@@ -1,0 +1,19 @@
+h1{
+  font-size: 100px;
+  color: #ff5900;
+  font-family: cursive;
+}
+
+h2{
+  color: orange;
+  font-family: fantasy;
+}
+
+img{
+  width: 800px;
+  height: 250px;
+}
+
+#welcome {
+  background-color: #F8F6F2;
+}

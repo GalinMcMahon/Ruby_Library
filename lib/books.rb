@@ -9,9 +9,13 @@ class Books
   end
 
   def save()
-    saved_data = DB.exec("INSERT INTO books (title, author) VALUES ('#{@title}', '#{@author}') RETURNING id;")
-    # OLD WAY @id = saved_data.first().fetch
-    @id = saved_data[0]["id"].to_i
+    saved_data1 = DB.exec("INSERT INTO books (title) VALUES ('#{@title}') RETURNING id;")
+    @id = saved_data1[0]["id"].to_i
+
+    saved_data2 = DB.exec("INSERT INTO authors (name) VALUES ('#{@author}') RETURNING id;")
+    new_author_id = saved_data2[0]["id"].to_i
+
+    DB.exec("INSERT INTO authors_books (book_id, author_id) VALUES (#{@id}, #{new_author_id});")
   end
 
   def self.all()
@@ -24,7 +28,8 @@ class Books
   end
 
   def self.delete(id)
-    DB.exec("DELETE FROM books WHERE id = '#{id}'")
+    DB.exec("DELETE FROM books WHERE id = #{id}")
+    DB.exec("DELETE FROM authors_books WHERE book_id = #{id}")
   end
 
   def update(info)

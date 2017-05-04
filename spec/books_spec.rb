@@ -45,6 +45,16 @@ describe('Books') do
       Books.delete(test_book2.id)
       expect(Books.all.length).to(eq(1))
     end
+    it("returns all books in the database") do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      test_book2.save
+      Books.delete(test_book2.id)
+      results = DB.exec("SELECT * FROM authors_books WHERE book_id = #{test_book2.id} ;")
+      # cmdtuples counts the returned number of tuples... effectivly like .length on arrays
+      expect(results.cmdtuples).to(eq(0))
+    end
   end
 
   describe('#update') do
@@ -57,70 +67,70 @@ describe('Books') do
       expect(test_book2.title).to(eq('Lord of the Rings'))
     end
   end
+  #
+  # describe('#update') do
+  #   it("updates the title and/or author for a book on the database") do
+  #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+  #     test_book2.save
+  #     update_hash = {'title' => 'Lord of the Rings', 'author' => 'Frank Zappa'}
+  #     test_book2.update(update_hash)
+  #     DB.exec("SELECT * FROM books WHERE id = '#{test_book2.id}';")
+  #     expect([test_book2.title, test_book2.author] ).to(eq(['Lord of the Rings','Frank Zappa']))
+  #   end
+  # end
 
-  describe('#update') do
-    it("updates the title and/or author for a book on the database") do
-      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
-      test_book2.save
-      update_hash = {'title' => 'Lord of the Rings', 'author' => 'Frank Zappa'}
-      test_book2.update(update_hash)
-      DB.exec("SELECT * FROM books WHERE id = '#{test_book2.id}';")
-      expect([test_book2.title, test_book2.author] ).to(eq(['Lord of the Rings','Frank Zappa']))
-    end
-  end
-
-  describe('.find_by_id') do
-    it('returns a book for a given id as it matches in the database') do
-      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-      test_book1.save
-      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
-      saved_id = test_book2.save
-      expect(Books.find_by_id(saved_id)['title']).to(eq(test_book2.title))
-    end
-  end
-
-  describe('.find_by_title') do
-    it('returns a book for a given id as it matches in the database') do
-      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-      test_book1.save
-      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
-      test_book2.save
-      expect(Books.find_by_title(test_book2.title)['title']).to(eq("The Hobbit"))
-    end
-  end
-
-  describe('.find_by_author') do
-    it('returns a book for a given id as it matches in the database') do
-      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-      test_book1.save
-      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
-      test_book2.save
-      expect(Books.find_by_author(test_book2.author)['author']).to(eq("JRR Tolkien"))
-    end
-  end
-
-  describe('#checkout') do
-    it('assigns a book to a patron') do
-      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-      test_book1.save
-      test_patron1 = Patrons.new('Dean Ween')
-      test_patron1.save
-      rows = test_book1.checkout(test_patron1.id)
-      expect(rows[0]["patron_id"].to_i).to(eq(test_patron1.id))
-    end
-  end
-
-  describe('#set_due_date') do
-    it("sets a due date on a book when it's checked out to a patron") do
-      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-      test_book1.save
-      test_patron1 = Patrons.new('Dean Ween')
-      test_patron1.save
-      rows = test_book1.checkout(test_patron1.id)
-      test_book1.set_due_date()
-      now = Time.now.+(7*24*60*60).strftime('%Y-%m-%d')
-      expect(test_book1.due_date).to(eq(now))
-    end
-  end
+  # describe('.find_by_id') do
+  #   it('returns a book for a given id as it matches in the database') do
+  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+  #     test_book1.save
+  #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+  #     saved_id = test_book2.save
+  #     expect(Books.find_by_id(saved_id)['title']).to(eq(test_book2.title))
+  #   end
+  # end
+  #
+  # describe('.find_by_title') do
+  #   it('returns a book for a given id as it matches in the database') do
+  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+  #     test_book1.save
+  #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+  #     test_book2.save
+  #     expect(Books.find_by_title(test_book2.title)['title']).to(eq("The Hobbit"))
+  #   end
+  # end
+  #
+  # describe('.find_by_author') do
+  #   it('returns a book for a given id as it matches in the database') do
+  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+  #     test_book1.save
+  #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+  #     test_book2.save
+  #     expect(Books.find_by_author(test_book2.author)['author']).to(eq("JRR Tolkien"))
+  #   end
+  # end
+  #
+  # describe('#checkout') do
+  #   it('assigns a book to a patron') do
+  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+  #     test_book1.save
+  #     test_patron1 = Patrons.new('Dean Ween')
+  #     test_patron1.save
+  #     rows = test_book1.checkout(test_patron1.id)
+  #     expect(rows[0]["patron_id"].to_i).to(eq(test_patron1.id))
+  #   end
+  # end
+  #
+  # describe('#set_due_date') do
+  #   it("sets a due date on a book when it's checked out to a patron") do
+  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+  #     test_book1.save
+  #     test_patron1 = Patrons.new('Dean Ween')
+  #     test_patron1.save
+  #     rows = test_book1.checkout(test_patron1.id)
+  #     test_book1.set_due_date()
+  #     now = Time.now.+(7*24*60*60).strftime('%Y-%m-%d')
+  #     expect(test_book1.due_date).to(eq(now))
+  #   end
+  # end
 
 end
