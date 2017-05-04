@@ -16,6 +16,7 @@ class Books
     new_author_id = saved_data2[0]["id"].to_i
 
     DB.exec("INSERT INTO authors_books (book_id, author_id) VALUES (#{@id}, #{new_author_id});")
+    return @id
   end
 
   def self.all()
@@ -40,7 +41,7 @@ class Books
 
     if (info['author'] != nil)
       @author = info['author']
-      results = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{@id}")
+      results = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{@id};")
       author_id = results[0]["author_id"].to_i
       DB.exec("UPDATE authors SET name = '#{@author}' WHERE id = #{author_id};")
     end
@@ -53,9 +54,17 @@ class Books
   end
 
   def self.find_by_title(title)
-    results = DB.exec("SELECT * FROM books WHERE title = '#{title}';")
-    found_book_hash = results[0]
-    found_book_hash
+    book_arr = []
+    results1 = DB.exec("SELECT * FROM books WHERE title = '#{title}';")
+    found_book_title = results1[0]['title']
+    found_book_id = results1[0]['id']
+    book_arr.push(found_book_title)
+    results2 = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{found_book_id} ;")
+    author_id = results2[0]["author_id"].to_i
+    results3 = DB.exec("SELECT name FROM authors WHERE id = #{author_id};")
+    author_name = results3[0]["name"]
+    book_arr.push(author_name)
+    book_arr
   end
 
   def self.find_by_author(author)

@@ -82,33 +82,34 @@ describe('Books') do
     end
   end
 
-  # describe('.find_by_id') do
-  #   it('returns a book for a given id as it matches in the database') do
-  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-  #     test_book1.save
-  #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
-  #     saved_id = test_book2.save
-  #     expect(Books.find_by_id(saved_id)['title']).to(eq(test_book2.title))
-  #   end
-  # end
-  #
-  # describe('.find_by_title') do
-  #   it('returns a book for a given id as it matches in the database') do
-  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-  #     test_book1.save
-  #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
-  #     test_book2.save
-  #     expect(Books.find_by_title(test_book2.title)['title']).to(eq("The Hobbit"))
-  #   end
-  # end
-  #
+  describe('.find_by_id') do
+    it('returns a book for a given id as it matches in the database') do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      saved_id = test_book2.save
+      expect(Books.find_by_id(saved_id)['title']).to(eq(test_book2.title))
+    end
+  end
+
+  describe('.find_by_title') do
+    it('returns a book for a given id as it matches in the database') do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      test_book2.save
+      Books.find_by_title(test_book2.title)
+      expect(Books.find_by_title(test_book2.title)).to(eq(["The Hobbit", "JRR Tolkien"]))
+    end
+  end
+
   # describe('.find_by_author') do
   #   it('returns a book for a given id as it matches in the database') do
   #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
   #     test_book1.save
   #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
   #     test_book2.save
-  #     expect(Books.find_by_author(test_book2.author)['author']).to(eq("JRR Tolkien"))
+  #     expect(Books.find_by_author(test_book2.author)).to(eq("JRR Tolkien"))
   #   end
   # end
   #
