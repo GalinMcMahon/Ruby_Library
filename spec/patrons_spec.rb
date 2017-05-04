@@ -36,4 +36,20 @@ describe('Patrons') do
     end
   end
 
+  describe('#all_checkouts') do
+    it("returns a list of all patrons") do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      test_book2.save
+      test_patron1 = Patrons.new('Dean Ween')
+      test_patron1.save
+      test_book1.checkout(test_patron1.id)
+      test_book1.set_due_date
+      test_book2.checkout(test_patron1.id)
+      test_book2.set_due_date
+      expect(test_patron1.all_checkouts.length).to(eq(2))
+    end
+  end
+
 end

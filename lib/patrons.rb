@@ -20,4 +20,14 @@ class Patrons
     all_patrons_arr
   end
 
+  # returns an array of checkouts hashes for given patron
+  def all_checkouts
+    all_checkouts_arr = []
+    results = DB.exec("SELECT * FROM checkouts WHERE patron_id = #{@id};")
+    results.each do |tuple|
+      all_checkouts_arr.push(tuple)
+    end
+    all_checkouts_arr
+  end
+
 end
