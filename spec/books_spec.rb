@@ -11,6 +11,8 @@ RSpec.configure do |config|
     DB.exec("DELETE FROM books *;")
     DB.exec("DELETE FROM patrons *;")
     DB.exec("DELETE FROM checkouts *;")
+    DB.exec("DELETE FROM authors *;")
+    DB.exec("DELETE FROM authors_books *;")
   end
 end
 
@@ -98,21 +100,23 @@ describe('Books') do
       test_book1.save
       test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
       test_book2.save
-      Books.find_by_title(test_book2.title)
       expect(Books.find_by_title(test_book2.title)).to(eq(["The Hobbit", "JRR Tolkien"]))
     end
   end
 
-  # describe('.find_by_author') do
-  #   it('returns a book for a given id as it matches in the database') do
-  #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
-  #     test_book1.save
-  #     test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
-  #     test_book2.save
-  #     expect(Books.find_by_author(test_book2.author)).to(eq("JRR Tolkien"))
-  #   end
-  # end
-  #
+  describe('.find_by_author') do
+    it('returns a book for a given id as it matches in the database') do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      test_book2 = Books.new('The Hobbit', 'JRR Tolkien')
+      test_book2.save
+      found_book_arr = Books.find_by_title(test_book2.title)
+      author_name = found_book_arr[1]
+# binding.pry
+      expect(Books.find_by_author(author_name)).to(eq(["The Hobbit", "JRR Tolkien"]))
+    end
+  end
+
   # describe('#checkout') do
   #   it('assigns a book to a patron') do
   #     test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')

@@ -58,19 +58,27 @@ class Books
     results1 = DB.exec("SELECT * FROM books WHERE title = '#{title}';")
     found_book_title = results1[0]['title']
     found_book_id = results1[0]['id']
-    book_arr.push(found_book_title)
     results2 = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{found_book_id} ;")
     author_id = results2[0]["author_id"].to_i
     results3 = DB.exec("SELECT name FROM authors WHERE id = #{author_id};")
     author_name = results3[0]["name"]
+    book_arr.push(found_book_title)
     book_arr.push(author_name)
     book_arr
   end
 
-  def self.find_by_author(author)
-    results = DB.exec("SELECT * FROM books WHERE author = '#{author}';")
-    found_book_hash = results[0]
-    found_book_hash
+  def self.find_by_author(author_name)
+    book_arr = []
+    results1 = DB.exec("SELECT * FROM authors WHERE name = '#{author_name}';")
+    found_author_name = results1[0]["name"]
+    found_author_id = results1[0]['id']
+    results2 = DB.exec("SELECT book_id FROM authors_books WHERE author_id = #{found_author_id} ;")
+    book_id = results2[0]["book_id"].to_i
+    results3 = DB.exec("SELECT title FROM books WHERE id = #{book_id};")
+    found_book_title = results3[0]["title"]
+    book_arr.push(found_book_title)
+    book_arr.push(found_author_name)
+    book_arr
   end
 
   # creates a new row in the CHECKOUTS table and adds the book_id and author_id
