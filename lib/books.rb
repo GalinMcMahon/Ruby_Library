@@ -56,15 +56,18 @@ class Books
     found_book_hash
   end
 
+  # creates a new row in the CHECKOUTS table and adds the book_id and author_id
   def checkout(patron_id)
     DB.exec("INSERT INTO checkouts (patron_id, book_id) VALUES (#{patron_id}, #{@id});")
     result_rows = DB.exec("SELECT * FROM checkouts WHERE book_id = #{@id};")
     result_rows
   end
 
+  # updates an existing row in CHECKOUTS table to show a real due date (7 days from now)
   def set_due_date()
-    new_date = Date.new 
-
+    # this adds 7 days in seconds (7*24*60*60)
+    @due_date = Time.now.+(7*24*60*60).strftime('%Y-%m-%d')
+    DB.exec("UPDATE checkouts SET due_date = #{@due_date} WHERE id = #{@id};")
   end
 
 end

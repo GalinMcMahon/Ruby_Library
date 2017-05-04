@@ -118,7 +118,8 @@ describe('Books') do
       test_patron1.save
       rows = test_book1.checkout(test_patron1.id)
       test_book1.set_due_date()
-      expect(test_book1.due_date).to(be_instance_of(Time))
+      now = Time.now.+(7*24*60*60).strftime('%Y-%m-%d')
+      expect(test_book1.due_date).to(eq(now))
     end
   end
 
