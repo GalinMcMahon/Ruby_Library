@@ -1,21 +1,4 @@
-require "books"
-require "patrons"
-require "rspec"
-require "pry"
-require "pg"
-
-DB = PG.connect({:dbname => 'library_test'})
-
-RSpec.configure do |config|
-  config.after(:each) do
-    DB.exec("DELETE FROM books *;")
-    DB.exec("DELETE FROM patrons *;")
-    DB.exec("DELETE FROM checkouts *;")
-    DB.exec("DELETE FROM authors *;")
-    DB.exec("DELETE FROM authors_books *;")
-  end
-end
-
+require 'spec_helper.rb'
 
 describe('Books') do
 
@@ -137,6 +120,17 @@ describe('Books') do
       test_book1.set_due_date()
       now = Time.now.+(7*24*60*60).strftime('%Y-%m-%d')
       expect(test_book1.due_date).to(eq(now))
+    end
+  end
+
+  describe('#add_author') do
+    it("adds an author to a given book title") do
+      test_book1 = Books.new('Robinson Crusoe', 'Daniel Defoe')
+      test_book1.save
+      returned_author_id = test_book1.add_author("Frank Zappa")
+      results1 = DB.exec("SELECT name FROM authors WHERE id = #{returned_author_id} ;")
+      author_name = results1[0]["name"]
+      expect(author_name).to(eq("Frank Zappa"))
     end
   end
 

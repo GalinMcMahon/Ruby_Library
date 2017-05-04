@@ -95,6 +95,14 @@ class Books
     DB.exec("UPDATE checkouts SET due_date = #{@due_date} WHERE id = #{@id};")
   end
 
+  def add_author(new_author_name)
+    @author = new_author_name
+    results1 = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{@id} ;")
+    author_id = results1[0]["author_id"].to_i
+    DB.exec("UPDATE authors SET name = '#{new_author_name}' WHERE id = #{author_id} ;")
+    return author_id
+  end
+
 end
 
 
