@@ -63,8 +63,8 @@ class Books
   end
 
   def set_due_date()
-    new_date = Time.now + (1*7*24*60*60)
-    
+    new_date = Date.new 
+
   end
 
 end
