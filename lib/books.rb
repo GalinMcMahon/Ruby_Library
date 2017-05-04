@@ -29,21 +29,31 @@ class Books
   end
 
   def self.delete(id)
-    DB.exec("DELETE FROM books WHERE id = #{id}")
-    DB.exec("DELETE FROM authors_books WHERE book_id = #{id}")
+    DB.exec("DELETE * FROM books WHERE id = #{id}")
+    DB.exec("DELETE * FROM authors_books WHERE book_id = #{id}")
   end
 
-  def update(info)
+  def self.delete_everything()
+    DB.exec("DELETE FROM authors *;")
+    DB.exec("DELETE FROM authors_books *;")
+    DB.exec("DELETE FROM books *;")
+    DB.exec("DELETE FROM checkouts *;")
+    DB.exec("DELETE FROM patrons *;")
+  end
+
+  def self.update(info)
     if (info['title'] != nil)
-      @title = info['title']
-      DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{@id};")
+      title = info['title']
+      book_id = info['book_id']
+      DB.exec("UPDATE books SET title = '#{title}' WHERE id = #{book_id};")
     end
 
     if (info['author'] != nil)
-      @author = info['author']
-      results = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{@id};")
+      author = info['author']
+      book_id = info['book_id']
+      results = DB.exec("SELECT author_id FROM authors_books WHERE book_id = #{book_id};")
       author_id = results[0]["author_id"].to_i
-      DB.exec("UPDATE authors SET name = '#{@author}' WHERE id = #{author_id};")
+      DB.exec("UPDATE authors SET name = '#{author}' WHERE id = #{author_id};")
     end
   end
 
@@ -51,6 +61,7 @@ class Books
     results = DB.exec("SELECT * FROM books WHERE id = #{id};")
     found_book_hash = results[0]
     found_book_hash
+    #finish allowing to return author later
   end
 
   def self.find_by_title(title)
@@ -72,12 +83,21 @@ class Books
     results1 = DB.exec("SELECT * FROM authors WHERE name = '#{author_name}';")
     found_author_name = results1[0]["name"]
     found_author_id = results1[0]['id']
-    results2 = DB.exec("SELECT book_id FROM authors_books WHERE author_id = #{found_author_id} ;")
-    book_id = results2[0]["book_id"].to_i
-    results3 = DB.exec("SELECT title FROM books WHERE id = #{book_id};")
-    found_book_title = results3[0]["title"]
-    book_arr.push(found_book_title)
-    book_arr.push(found_author_name)
+    results2 = DB.exec("SELECT * FROM authors_books WHERE author_id = #{found_author_id} ;")
+
+    results2.each do |obj|
+      book_id = obj[0]['book_id'].to_i
+      author_id = obj[0]['author_id'].to_i
+      book_result = DB.exec("SELECT title FROM books WHERE id = #{book_id};")
+      book_title = book_result[1]
+      author_result = DB.exec("SELECT name FROM author WHERE id = #{author_id};")
+      author_title = author_result[1]
+      book_arr.push({'title' => book_title, 'name' => author_title})
+    end
+
+    # book_id = results2[0]["book_id"].to_i
+    # results3 = DB.exec("SELECT title FROM books WHERE id = #{book_id};")
+    # found_book_title = results3[0]["title"]
     book_arr
   end
 
@@ -104,9 +124,3 @@ class Books
   end
 
 end
-
-
-
-
-# result.first().fetch("id").to_i()
-# result[0]['id']

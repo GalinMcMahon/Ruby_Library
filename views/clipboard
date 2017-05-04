@@ -1,0 +1,11 @@
+
+
+
+books erb 21
+
+<h2>A list of all books in the library</h2><br><br>
+
+<ul style="list-style: none;">
+  <% @titles_arr.each() do |title_hash| %>
+    <li><a href="/book_page/<%= title_hash['id'] %>"><%= title_hash['title']%></a></li>
+  <% end %>

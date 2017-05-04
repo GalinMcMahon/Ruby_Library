@@ -1,0 +1,23 @@
+<h1>Welcome</h1><br><br>
+<p><h2>User: <%=@patron_name%></h2></p>
+<br><br>
+
+<form action="/title_search" method="post">
+  <div class="form-group">
+    <label for="title">Search books by TITLE</label>
+      <input name="title" class="form-control" type="text">
+  </div>
+  <button type="submit" class="btn btn-success">search</button>
+</form>
+<hr>
+<form action="/author_search" method="post">
+  <div class="form-group">
+    <label for="author">Search books by AUTHOR</label>
+      <input name="author" class="form-control" type="text">
+  </div>
+  <button type="submit" class="btn btn-success">search</button>
+</form>
+<hr>
+      <!-- NEED TO RUN self.find_by_title ON APP.RB -->
+
+<h5><a href="/">Home</a></h5>

@@ -1,0 +1,14 @@
+<h1>All Patrons</h1><br><br>
+<hr>
+<h3>At Epicodus Library, patron security is a top priority.<h3>
+<p>Choose your name and ONLY your name from the list below:</p>
+<br><br>
+<hr>
+  <ul style="list-style: none;">
+    <% @patrons_arr.each() do |patron_hash| %>
+      <li><a href="/patron_name/<%= patron_hash['id'] %>"><%= patron_hash['name'] %></a></li>
+    <% end %>
+  </ul>
+<hr>
+<br><br>
+<h3><a href="/signup">New user?  Sign up here</a></h3>

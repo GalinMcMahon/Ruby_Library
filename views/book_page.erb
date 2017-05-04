@@ -1,0 +1,21 @@
+<h1>BOOK PAGE ERB</h1><br><br>
+
+
+<h3>Title: <%= @found_book_title %> </h3>
+<h3>Author: <%= @found_book_author %> </h3>
+<h3>Due Date: <%= @due_date %> </h3>
+
+<h2>UPDATE BOOK INFORMATION</h2>
+<form action="/update_book_form/<%=@selected_book_id%>" method="post">
+  <div class="form-group">
+    <label for="update_book_title">Enter the book's updated title:</label>
+      <input name="update_book_title" class="form-control" type="text">
+    <label for="update_book_author">Enter the book's updated author:</label>
+      <input name="update_book_author" class="form-control" type="text">
+  </div>
+  <hr>
+  <button type="submit" class="btn btn-success">update book</button>
+</form>
+
+
+<h3><a href="/">Home</a></h3>
